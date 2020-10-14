@@ -14,14 +14,6 @@ class App extends React.Component {
     showModal: false,
   }
   componentDidMount = async () => {
-    // const {
-    //   allBreeds,
-    //   unChangedBreedList,
-    //   pureBreeds,
-    //   nonLive,
-    //   crossBreeds,
-    // } = this.state
-
     let response = await fetch('/api/breeds')
     let data = await response.json()
 
@@ -35,13 +27,32 @@ class App extends React.Component {
       return breed.live === false
     })
 
-    console.log('NON', nonLive)
     this.setState({
-      unChangedBreedList: data,
-      allBreeds: data,
-      pureBreeds,
-      nonLive,
-      crossBreeds,
+      unChangedBreedList: {
+        breed: data,
+        url:
+          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/pomeranian-f55614cfe174bb5abd71eaaba4517ba275dfc8dc5d43aa8b0c3fcc9c8a26655d.jpg',
+      },
+      allBreeds: {
+        breed: data,
+        url:
+          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/pomeranian-f55614cfe174bb5abd71eaaba4517ba275dfc8dc5d43aa8b0c3fcc9c8a26655d.jpg',
+      },
+      pureBreeds: {
+        breed: pureBreeds,
+        url:
+          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/bichon-frise-d4704af96a9aaa7b7fdeeaa1ad158546bba0581e944713da0f6634ccbe2704bf.jpg',
+      },
+      crossBreeds: {
+        breed: crossBreeds,
+        url:
+          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/poodle-3c33b6367ce0fc252e2a8681243320ae090bbb00bac8a48d057c82308d5f5259.jpg',
+      },
+      nonLive: {
+        breed: nonLive,
+        url:
+          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/shih-tzu-7360b4f77663ac7706c83dd6e4a4206550d4281f0929453d57e62268b32ac67b.jpg',
+      },
     })
   }
   handleTabClick = (index) => {
@@ -52,7 +63,6 @@ class App extends React.Component {
       nonLive,
       crossBreeds,
     } = this.state
-    console.log('test', index)
 
     this.setState({
       allBreeds:
@@ -68,8 +78,6 @@ class App extends React.Component {
   handleOnChange = (event) => {
     let word = event.target.value
     this.setState({ inputValue: word })
-
-    console.log('searc', word)
   }
   modalVisibility = (event) => {
     if (event.target.name === 'input') {
@@ -86,22 +94,15 @@ class App extends React.Component {
       showModal,
       allBreeds,
     } = this.state
-    console.log('breedlist', this.state)
-    // let done = unChangedBreedList.map((a) => {
-    //   return a.name
-    // })
-    // console.log('ALL', allBreeds)
-    let finalList = this.state.allBreeds
+
+    let finalList = allBreeds.breed
       ?.filter((a) => {
         return a.name.toLowerCase().includes(inputValue)
       })
       ?.map((b, c) => {
         return (
           <li className='app-component__breed-item' key={c}>
-            <img
-              className='app-component__breed-image'
-              // src={unChangedBreedList.url}
-            />
+            <img className='app-component__breed-image' src={allBreeds.url} />
             {b.name}
           </li>
         )
@@ -109,7 +110,10 @@ class App extends React.Component {
 
     return (
       <div className='app-component'>
-        <p>I have {allBreeds.length} breeds ready to be searched!</p>
+        <p>
+          I have <strong>{finalList?.length}</strong> breeds ready to be
+          searched!
+        </p>
         <input
           onClick={this.modalVisibility}
           className='app-component__search-input'
