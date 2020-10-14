@@ -4,48 +4,48 @@ describe('App', () => {
       id: 1,
       live: true,
       hybrid: false,
-      name: 'Pure Breed (1)',
-    },
-  ]
+      name: 'Pure Breed (1)'
+    }
+  ];
 
   const hybridBreeds = [
     {
       id: 2,
       live: true,
       hybrid: true,
-      name: 'Hybrid Breed (2)',
+      name: 'Hybrid Breed (2)'
     },
     {
       id: 3,
       live: true,
       hybrid: true,
-      name: 'Hybrid Breed (3)',
-    },
-  ]
+      name: 'Hybrid Breed (3)'
+    }
+  ];
 
   const notLiveBreeds = [
     {
       id: 4,
       live: false,
       hybrid: false,
-      name: 'Not Live Pure Breed (4)',
+      name: 'Not Live Pure Breed (4)'
     },
     {
       id: 5,
       live: false,
       hybrid: true,
-      name: 'Not Live Hybrid Breed (5)',
+      name: 'Not Live Hybrid Breed (5)'
     },
     {
       id: 6,
       live: false,
       hybrid: true,
-      name: 'Not Live Hybrid Breed (6)',
-    },
-  ]
+      name: 'Not Live Hybrid Breed (6)'
+    }
+  ];
 
   // eslint-disable-next-line no-unused-vars
-  const allBreeds = [...pureBreeds, ...hybridBreeds, ...notLiveBreeds]
+  const allBreeds = [...pureBreeds, ...hybridBreeds, ...notLiveBreeds];
 
   // ADD TESTS:
   // Given the `allBreeds` array above:
@@ -59,25 +59,19 @@ describe('App', () => {
   // In addition to the above tests, you can also add however many tests
   // you think are necessary for your changes!
   it('allBreeds', () => {
-    expect(allBreeds.length).toEqual(6)
-  })
+    expect(allBreeds.length).toEqual(6);
+  });
   it('pureBreeds', () => {
-    let pureBreeds = allBreeds.filter((a) => {
-      return a.hybrid === false && a.live === true
-    })
-    expect(pureBreeds.length).toEqual(1)
-  })
+    const pure = allBreeds.filter(a => a.hybrid === false && a.live === true);
+    expect(pure.length).toEqual(1);
+  });
   it('hybridBreeds', () => {
-    let hybridBreeds = allBreeds.filter((a) => {
-      return a.hybrid === true && a.live === true
-    })
-    expect(hybridBreeds.length).toEqual(2)
-  })
+    const hybrid = allBreeds.filter(a => a.hybrid === true && a.live === true);
+    expect(hybrid.length).toEqual(2);
+  });
 
   it('non-live', () => {
-    let nonLive = allBreeds.filter((a) => {
-      return a.live === false
-    })
-    expect(nonLive.length).toEqual(3)
-  })
-})
+    const nonLive = allBreeds.filter(a => a.live === false);
+    expect(nonLive.length).toEqual(3);
+  });
+});
