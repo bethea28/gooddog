@@ -1,0 +1,49 @@
+.app-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .app-component__search-input {
+    width: 400px;
+    height: 50px;
+  }
+
+  .app-component__modal-container {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    width: 400px;
+    // overflow: auto;
+  }
+
+  .app-component__list-container {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .app-component__tab-buttons {
+    height: 50px;
+    background-color: beige;
+    border-radius: 5px;
+    &:hover {
+      background-color: fuchsia;
+    }
+  }
+
+  .app-component__breed-item {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    background-color: beige;
+
+    &:hover {
+      background-color: fuchsia;
+    }
+  }
+
+  .app-component__breed-image {
+    margin-right: 20px;
+    width: 100px;
+    height: 100px;
+  }
+}
