@@ -14,6 +14,7 @@ class App extends React.Component {
     breedTabs: ['All', 'Purebreed', 'Crossbreed', 'Not Live'],
     showModal: false,
   }
+
   componentDidMount = async () => {
     const response = await fetch('/api/breeds')
     const data = await response.json()
@@ -55,6 +56,7 @@ class App extends React.Component {
       },
     })
   }
+
   handleTabClick = (index) => {
     const { unChangedBreedList, pureBreeds, nonLive, crossBreeds } = this.state
 
@@ -76,6 +78,7 @@ class App extends React.Component {
     const word = event.target.value
     this.setState({ inputValue: word })
   }
+
   // modal visibility logic based on the input
   modalVisibility = (event) => {
     if (event.target.className === 'app-component__search-input') {
@@ -84,17 +87,14 @@ class App extends React.Component {
       })
     }
   }
+
   render() {
     const { breedTabs, inputValue, showModal, allBreeds } = this.state
-
-    // logic for filtered list functionality that utilizes a helper function
-    const finalList = filterListHelper(allBreeds, inputValue)
-
+    let breedLength = allBreeds?.breed?.length
     return (
       <section className='app-component'>
         <p>
-          I have <strong>{finalList?.length}</strong> breeds ready to be
-          searched!
+          I have <strong>{breedLength}</strong> breeds ready to be searched!
         </p>
         <input
           onClick={this.modalVisibility}
