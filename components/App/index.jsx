@@ -1,6 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
-import { filterListHelper } from './filterListHelper.jsx'
+import { filterListHelper, FilteredList } from './filterListHelper.jsx'
 import './app.scss'
 
 class App extends React.Component {
@@ -117,7 +117,10 @@ class App extends React.Component {
                 </button>
               ))}
             </div>
-            <div className='app-component__list-container'>{finalList}</div>
+            {/* <div className='app-component__list-container'>{finalList}</div> */}
+            <div className='app-component__list-container'>
+              <FilteredList breeds={allBreeds} inputValue={inputValue} />
+            </div>
           </article>
         )}
       </section>
