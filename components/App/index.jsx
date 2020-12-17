@@ -1,77 +1,39 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
-import { filterListHelper, FilteredList } from './filterListHelper.jsx'
+import {
+  filterListHelper,
+  FilteredList,
+  HigherOrderComponent,
+} from './filterListHelper.jsx'
 import './app.scss'
 
 class App extends React.Component {
   state = {
-    unChangedBreedList: [],
     inputValue: '',
-    allBreeds: [],
-    pureBreeds: [],
-    crossBreeds: [],
-    nonLive: [],
-    breedTabs: ['All', 'Purebreed', 'Crossbreed', 'Not Live'],
-    showModal: false,
-  }
-
-  componentDidMount = async () => {
-    const response = await fetch('/api/breeds')
-    const data = await response.json()
-
-    // logic that creates the different tab groups
-    const pureBreeds = data?.filter(
-      (breed) => breed.hybrid === false && breed.live === false
-    )
-    const crossBreeds = data?.filter(
-      (breed) => breed.hybrid === true && breed.live === false
-    )
-    const nonLive = data?.filter((breed) => breed.live === false)
-
-    this.setState({
-      unChangedBreedList: {
-        breed: data,
-        url:
-          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/pomeranian-f55614cfe174bb5abd71eaaba4517ba275dfc8dc5d43aa8b0c3fcc9c8a26655d.jpg',
-      },
-      allBreeds: {
-        breed: data,
-        url:
-          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/pomeranian-f55614cfe174bb5abd71eaaba4517ba275dfc8dc5d43aa8b0c3fcc9c8a26655d.jpg',
-      },
-      pureBreeds: {
-        breed: pureBreeds,
-        url:
-          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/bichon-frise-d4704af96a9aaa7b7fdeeaa1ad158546bba0581e944713da0f6634ccbe2704bf.jpg',
-      },
-      crossBreeds: {
-        breed: crossBreeds,
-        url:
-          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/poodle-3c33b6367ce0fc252e2a8681243320ae090bbb00bac8a48d057c82308d5f5259.jpg',
-      },
-      nonLive: {
-        breed: nonLive,
-        url:
-          'https://d3requdwnyz98t.cloudfront.net/assets/pages/index/breeds/shih-tzu-7360b4f77663ac7706c83dd6e4a4206550d4281f0929453d57e62268b32ac67b.jpg',
-      },
-    })
+    allBreeds: this.props.unChangedBreedList,
   }
 
   handleTabClick = (index) => {
-    const { unChangedBreedList, pureBreeds, nonLive, crossBreeds } = this.state
+    console.log('ind', this.props.hocState)
+    const {
+      hocState: { unChangedBreedList, pureBreeds, nonLive, crossBreeds },
+    } = this.props
 
     /* eslint-disable no-nested-ternary */
     // logic for filtering breed tabs
-    this.setState({
-      allBreeds:
-        index === 1
-          ? pureBreeds
-          : index === 2
-          ? crossBreeds
-          : index === 3
-          ? nonLive
-          : unChangedBreedList,
-    })
+    this.setState(
+      {
+        allBreeds:
+          index === 1
+            ? this.props.hocState.pureBreeds
+            : index === 2
+            ? this.props.hocState.crossBreeds
+            : index === 3
+            ? this.props.hocState.nonLive
+            : this.props.hocState.unChangedBreedList,
+      },
+      () => console.log('try this', this.state)
+    )
   }
 
   handleOnChange = (event) => {
@@ -81,16 +43,20 @@ class App extends React.Component {
 
   // modal visibility logic based on the input
   modalVisibility = (event) => {
+    console.log('test')
     if (event.target.className === 'app-component__search-input') {
-      this.setState({
-        showModal: !this.state.showModal,
-      })
+      this.setState((prev) => ({
+        showModal: !prev.showModal,
+      }))
     }
   }
 
   render() {
-    const { breedTabs, inputValue, showModal, allBreeds } = this.state
-    let breedLength = allBreeds?.breed?.length
+    const {
+      hocState: { breedTabs },
+    } = this.props
+    let breedLength = this.state.allBreeds?.breed?.length
+    console.log('state bryan', this.state.allBreeds)
     return (
       <section className='app-component'>
         <p>
@@ -103,7 +69,7 @@ class App extends React.Component {
           name='input'
           placeholder='Enter a breed, e.g. "Havanese"'
         />
-        {showModal && (
+        {this.state.showModal && (
           <article className='app-component__modal-container'>
             <div>
               {breedTabs.map((tab, tabIndex) => (
@@ -117,15 +83,18 @@ class App extends React.Component {
                 </button>
               ))}
             </div>
-            {/* <div className='app-component__list-container'>{finalList}</div> */}
-            <div className='app-component__list-container'>
-              <FilteredList breeds={allBreeds} inputValue={inputValue} />
-            </div>
+            {
+              <div className='app-component__list-container'>
+                <FilteredList
+                  breeds={this.state.allBreeds}
+                  inputValue={this.state.inputValue}
+                />
+              </div>
+            }
           </article>
         )}
       </section>
     )
   }
 }
-
-export default App
+export default HigherOrderComponent(App)
